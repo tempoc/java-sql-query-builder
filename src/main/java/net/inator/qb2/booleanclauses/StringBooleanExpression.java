@@ -1,6 +1,6 @@
 package net.inator.qb2.booleanclauses;
 
-import net.inator.qb2.Q;
+import net.inator.qb2.Query;
 import net.inator.qb2.listables.Listable;
 
 import java.util.Collection;
@@ -34,7 +34,7 @@ public class StringBooleanExpression implements BooleanExpression{
         return this;
     }
 
-    public StringBooleanExpression in(Q subQuery) {
+    public StringBooleanExpression in(Query subQuery) {
         in = new In(subQuery);
         return this;
     }

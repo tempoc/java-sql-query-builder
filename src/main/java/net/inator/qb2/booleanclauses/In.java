@@ -1,6 +1,6 @@
 package net.inator.qb2.booleanclauses;
 
-import net.inator.qb2.Q;
+import net.inator.qb2.Query;
 import net.inator.qb2.listables.Listable;
 
 /**
@@ -11,13 +11,13 @@ import net.inator.qb2.listables.Listable;
  */
 public class In {
     private Listable listable;
-    private Q subQuery;
+    private Query subQuery;
 
     public In(Listable listable) {
         this.listable = listable;
     }
 
-    public In(Q subQuery) {
+    public In(Query subQuery) {
         this.subQuery = subQuery;
     }
 
