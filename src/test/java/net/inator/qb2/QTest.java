@@ -12,25 +12,25 @@ import java.util.ArrayList;
  * Date: 10/26/11
  * Time: 8:29 PM
  */
-public class QueryTest {
+public class QTest {
 
     @Test
     public void selectStringTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("mission.*");
         Assert.assertEquals("select mission.*", q.toString());
     }
 
     @Test
     public void selectArrayTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("mission.*", "traveler.*");
         Assert.assertEquals("select mission.*, traveler.*", q.toString());
     }
 
     @Test
     public void selectCollectionTest() {
-        Query q = new Query();
+        Q q = new Q();
 
         final ArrayList<String> strings = new ArrayList<String>();
         strings.add("mission.*");
@@ -41,14 +41,14 @@ public class QueryTest {
 
     @Test
     public void fromStringTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("m.*").from("mission m");
         Assert.assertEquals("select m.* from mission m", q.toString());
     }
 
     @Test
     public void fromArrayTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("m.*", "t.*").from("mission m", "traveler t");
         Assert.assertEquals("select m.*, t.* from mission m, traveler t", q.toString());
     }
@@ -63,35 +63,35 @@ public class QueryTest {
         froms.add("mission m");
         froms.add("traveler t");
 
-        Query q = new Query();
+        Q q = new Q();
         q.select(selects).from(froms);
         Assert.assertEquals("select m.*, t.* from mission m, traveler t", q.toString());
     }
 
     @Test
     public void testJoin() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("*").from("mission m").join("m.traveler t");
         Assert.assertEquals("select * from mission m join m.traveler t", q.toString());
     }
 
     @Test
     public void testLeftOuterJoin() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("*").from("mission m").leftOuterJoin("m.traveler t");
         Assert.assertEquals("select * from mission m left outer join m.traveler t", q.toString());
     }
 
     @Test
     public void whereStringTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("m.*", "t.*").from("mission m", "traveler t").where("m.id=1");
         Assert.assertEquals("select m.*, t.* from mission m, traveler t where m.id=1", q.toString());
     }
 
     @Test
     public void andStringTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("m.*", "t.*").from("mission m", "traveler t").where(
                 new Where(new And("m.id=1", "t.id=2"))
         );
@@ -100,7 +100,7 @@ public class QueryTest {
 
     @Test
     public void andNestedTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("m.*", "t.*").from("mission m", "traveler t").where(
                 new Where(new And(new And("m.id=1", "t.id=2"), new And("m.id=1", "t.id=2")))
         );
@@ -109,7 +109,7 @@ public class QueryTest {
 
     @Test
     public void andCombinedTest1() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("m.*", "t.*").from("mission m", "traveler t").where(
                 new Where(new And("m.id=1", new And("m.id=1", "t.id=2")))
         );
@@ -118,7 +118,7 @@ public class QueryTest {
 
     @Test
     public void andCombinedTest2() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("m.*", "t.*").from("mission m", "traveler t").where(
                 new Where(new And(new And("m.id=1", "t.id=2"), "m.id=1"))
         );
@@ -127,7 +127,7 @@ public class QueryTest {
 
     @Test
     public void orStringTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("m.*", "t.*").from("mission m", "traveler t").where(
                 new Where(new Or("m.id=1", "t.id=2"))
         );
@@ -136,7 +136,7 @@ public class QueryTest {
 
     @Test
     public void orNestedTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("m.*", "t.*").from("mission m", "traveler t").where(
                 new Where(new Or(new Or("m.id=1", "t.id=2"), new Or("m.id=1", "t.id=2")))
         );
@@ -145,7 +145,7 @@ public class QueryTest {
 
     @Test
     public void orCombinedTest1() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("m.*", "t.*").from("mission m", "traveler t").where(
                 new Where(new Or("m.id=1", new Or("m.id=1", "t.id=2")))
         );
@@ -154,7 +154,7 @@ public class QueryTest {
 
     @Test
     public void orCombinedTest2() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("m.*", "t.*").from("mission m", "traveler t").where(
                 new Where(new Or(new Or("m.id=1", "t.id=2"), "m.id=1"))
         );
@@ -163,7 +163,7 @@ public class QueryTest {
 
     @Test
     public void testAny() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("*").from("mission m").where(new Where(
                 new Any("a=b", "c=d", "e=f")
         ));
@@ -172,7 +172,7 @@ public class QueryTest {
 
     @Test
     public void testAll() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("*").from("mission m").where(new Where(
                 new All("a=b", "c=d", "e=f")
         ));
@@ -181,38 +181,38 @@ public class QueryTest {
 
     @Test
     public void nestAnyAllTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("*").from("mission m").where(new Where(new Or(new All("a", "b", "c"), new All("d", "e"))));
         Assert.assertEquals("select * from mission m where (a and b and c) or (d and e)", q.toString());
     }
 
     @Test
     public void nestAndOrTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("*").from("mission m").where(new Where(new Any(new And("a", "b"), new Or("d", "e"))));
         Assert.assertEquals("select * from mission m where (a and b) or (d or e)", q.toString());
     }
 
     @Test
     public void inTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("*").from("mission m").where(new Where(new StringBooleanExpression("m.id").in(1, 2, 3, 4)));
         Assert.assertEquals("select * from mission m where m.id in (1, 2, 3, 4)", q.toString());
     }
 
     @Test
     public void nestedQueryInTest() {
-        Query subQuery = new Query();
+        Q subQuery = new Q();
         subQuery.select("m.id").from("mission m").join("m.traveler t").where("m.name like '%South%'");
 
-        Query q = new Query();
+        Q q = new Q();
         q.select("*").from("mission m").where(new Where(new StringBooleanExpression("m.id").in(subQuery)));
         Assert.assertEquals("select * from mission m where m.id in (select m.id from mission m join m.traveler t where m.name like '%South%')", q.toString());
     }
 
     @Test
     public void orderByTest() {
-        Query q = new Query();
+        Q q = new Q();
         q.select("*").from("mission m").where(new Where(new StringBooleanExpression("m.id").in(1, 2, 3, 4))).orderBy("m.name");
         Assert.assertEquals("select * from mission m where m.id in (1, 2, 3, 4) order by m.name", q.toString());
     }
