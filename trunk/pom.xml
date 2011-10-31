@@ -6,7 +6,7 @@
 
     <groupId>net.inator</groupId>
     <artifactId>qb</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <name>java-sql-query-builder</name>
     <description>Use plain Java to build SQL query strings.</description>
     <url>http://code.google.com/p/java-sql-query-builder/</url>

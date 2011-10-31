@@ -1,6 +1,6 @@
 package net.inator.qb2;
 
-import net.inator.qb2.booleanclauses.*;
+import net.inator.qb2.booleanexpressions.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -196,7 +196,7 @@ public class QTest {
     @Test
     public void inTest() {
         Q q = new Q();
-        q.select("*").from("mission m").where(new Where(new StringBooleanExpression("m.id").in(1, 2, 3, 4)));
+        q.select("*").from("mission m").where(new Where(new StringExp("m.id").in(1, 2, 3, 4)));
         Assert.assertEquals("select * from mission m where m.id in (1, 2, 3, 4)", q.toString());
     }
 
@@ -206,14 +206,27 @@ public class QTest {
         subQuery.select("m.id").from("mission m").join("m.traveler t").where("m.name like '%South%'");
 
         Q q = new Q();
-        q.select("*").from("mission m").where(new Where(new StringBooleanExpression("m.id").in(subQuery)));
+        q.select("*").from("mission m").where(new Where(new StringExp("m.id").in(subQuery)));
         Assert.assertEquals("select * from mission m where m.id in (select m.id from mission m join m.traveler t where m.name like '%South%')", q.toString());
     }
 
     @Test
     public void orderByTest() {
         Q q = new Q();
-        q.select("*").from("mission m").where(new Where(new StringBooleanExpression("m.id").in(1, 2, 3, 4))).orderBy("m.name");
+        q.select("*").from("mission m").where(new Where(new StringExp("m.id").in(1, 2, 3, 4))).orderBy("m.name");
         Assert.assertEquals("select * from mission m where m.id in (1, 2, 3, 4) order by m.name", q.toString());
+    }
+    
+    @Test
+    public void testSimpleSyntax() {
+        Q q = new Q();
+        Q subQuery = new Q().select("max(td2.id)").from("TravelerDelay td2").where("td2.traveler.id = t.id");
+        ExpList all = new ExpList();
+        all.addIn("delay.id", subQuery);
+        all.add("delay.endDate is null");
+        all.add("delay.startDate is not null");
+        all.add("delay.travelToMissionDate is null");
+        q.select("*").from("mission m").where(new All(all));
+        Assert.assertEquals("select * from mission m where delay.id in (select max(td2.id) from TravelerDelay td2 where td2.traveler.id = t.id) and delay.endDate is null and delay.startDate is not null and delay.travelToMissionDate is null", q.toString());
     }
 }

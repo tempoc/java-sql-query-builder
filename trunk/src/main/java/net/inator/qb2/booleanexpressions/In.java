@@ -1,4 +1,4 @@
-package net.inator.qb2.booleanclauses;
+package net.inator.qb2.booleanexpressions;
 
 import net.inator.qb2.Q;
 import net.inator.qb2.listables.Listable;
