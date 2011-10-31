@@ -1,4 +1,4 @@
-package net.inator.qb2.booleanclauses;
+package net.inator.qb2.booleanexpressions;
 
 import net.inator.qb2.Q;
 import net.inator.qb2.listables.Listable;
@@ -11,30 +11,30 @@ import java.util.Collection;
  * Date: 10/27/11
  * Time: 11:47 AM
  */
-public class StringBooleanExpression implements BooleanExpression{
+public class StringExp implements Exp {
     private final String expression;
     private In in;
 
-    public StringBooleanExpression(String expression) {
+    public StringExp(String expression) {
         this.expression = expression;
     }
 
-    public StringBooleanExpression in(String s) {
+    public StringExp in(String s) {
         in = new In(Listable.parse(s));
         return this;
     }
 
-    public <T> StringBooleanExpression in(T... a) {
+    public <T> StringExp in(T... a) {
         in = new In(Listable.parse(a));
         return this;
     }
 
-    public <T> StringBooleanExpression in(Collection<T> c) {
+    public <T> StringExp in(Collection<T> c) {
         in = new In(Listable.parse(c));
         return this;
     }
 
-    public StringBooleanExpression in(Q subQuery) {
+    public StringExp in(Q subQuery) {
         in = new In(subQuery);
         return this;
     }
@@ -48,5 +48,17 @@ public class StringBooleanExpression implements BooleanExpression{
         }
 
         return sb.toString();
+    }
+
+    public int length() {
+        return toString().length();
+    }
+
+    public char charAt(int index) {
+        return toString().charAt(index);
+    }
+
+    public CharSequence subSequence(int start, int end) {
+        return toString().subSequence(start, end);
     }
 }

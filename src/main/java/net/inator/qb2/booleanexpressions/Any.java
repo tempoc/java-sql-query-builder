@@ -1,4 +1,4 @@
-package net.inator.qb2.booleanclauses;
+package net.inator.qb2.booleanexpressions;
 
 import java.util.List;
 
@@ -8,17 +8,17 @@ import java.util.List;
  * Date: 10/27/11
  * Time: 11:38 AM
  */
-public class Any extends LinearBooleanExpression {
+public class Any extends LinearExp {
 
     public Any() {
     }
 
-    public Any(List<BooleanExpression> expressions) {
-        super(expressions);
+    public Any(List<CharSequence> exps) {
+        super(exps);
     }
 
-    public Any(BooleanExpression... expressions) {
-        super(expressions);
+    public Any(CharSequence... exps) {
+        super(exps);
     }
 
     public Any(String... expressions) {

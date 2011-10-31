@@ -1,6 +1,10 @@
 package net.inator.qb2;
 
+import net.inator.qb2.booleanexpressions.Exp;
+
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is the main query infrastructure builder.
@@ -16,6 +20,11 @@ public class Q {
     private From from;
     private Where where;
     private OrderBy orderBy;
+    private Map<String, Object> params;
+
+    public Q() {
+        params = new HashMap<String, Object>();
+    }
 
     public Q select(String s) {
         select = new Select(s);
@@ -69,8 +78,15 @@ public class Q {
         return this;
     }
 
+    public Q where(Exp where) {
+        this.where = new Where(where);
+        return this;
+    }
+
     public Q orderBy(String orderBy) {
-        this.orderBy = new OrderBy(orderBy);
+        if(orderBy!=null && !"".equals(orderBy)) {
+            this.orderBy = new OrderBy(orderBy);
+        }
         return this;
     }
 
@@ -121,5 +137,13 @@ public class Q {
                     || (test instanceof Collection && !((Collection) test).isEmpty())
                     || (test instanceof Boolean) && ((Boolean) test)
                 );
+    }
+
+    public Map<String, Object> getParams() {
+        return params;
+    }
+
+    public void setParams(Map<String, Object> params) {
+        this.params = params;
     }
 }
