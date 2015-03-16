@@ -1,0 +1,1 @@
+This library facilitates composition of SQL query strings in Java by using builder practices and relying on Java's grammar and code constructs.
